@@ -29,26 +29,26 @@ import javafx.stage.Stage;
 public class mainApplication implements Initializable {
 
 	DataBase db;
-	
+
 	@FXML
 	private TableView<Game> table1;
 	@FXML
 	private TableColumn<Game, String> title1;
-		@FXML
+	@FXML
 	private TableColumn<Game, String> platform1;
-		@FXML
+	@FXML
 	private TableColumn<Game, String> studio1;
-		@FXML
+	@FXML
 	private TableColumn<Game, Date> date_premiere1;
-		@FXML
+	@FXML
 	private TableColumn<Game, Date> date_premiere_pl1;
-		
+
 	public ObservableList<Game> list = FXCollections.observableArrayList();
 	ArrayList<Game> listGames = new ArrayList<Game>();
 
 	@FXML
 	Button addButton;
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		db = new DataBase();
@@ -60,38 +60,28 @@ public class mainApplication implements Initializable {
 		studio1.setCellValueFactory(new PropertyValueFactory<Game, String>("studio"));
 		date_premiere1.setCellValueFactory(new PropertyValueFactory<Game, Date>("date_premiere"));
 		date_premiere_pl1.setCellValueFactory(new PropertyValueFactory<Game, Date>("date_premiere_pl"));
-	
-	/*table1.setOnKeyPressed(new EventHandler<KeyEvent>() {
-	    public void handle(KeyEvent ke) {
-	       if(ke.getText().equals("a")) {
-	    	   addGame(addButton.);
-	    	   System.out.println("To jest przycisk z");
-	       }
-	       else if(ke.getText().equals("d")) {
-	    	   System.out.println("To jest przycisk z");
-	       }
-	       else if(ke.getText().equals("e")) {
-	    	   System.out.println("To jest przycisk z");
-	       }
-	       else if(ke.getText().equals("w")) {
-	    	   System.out.println("To jest przycisk z");
-	       }
-	       else {}
-	    }
-	});*/
+
+		/*
+		 * table1.setOnKeyPressed(new EventHandler<KeyEvent>() { public void
+		 * handle(KeyEvent ke) { if(ke.getText().equals("a")) { addGame(addButton.);
+		 * System.out.println("To jest przycisk z"); } else if(ke.getText().equals("d"))
+		 * { System.out.println("To jest przycisk z"); } else
+		 * if(ke.getText().equals("e")) { System.out.println("To jest przycisk z"); }
+		 * else if(ke.getText().equals("w")) { System.out.println("To jest przycisk z");
+		 * } else {} } });
+		 */
 	}
-	
-	
-	//Metoda dodawania 
-	//Skonczona
+
+	// Metoda dodawania
+	// Skonczona
 	public void addGame(ActionEvent event) {
-	try {
-		System.out.println(event.getSource());
-			((Node)event.getSource()).getScene().getWindow().hide();
+		try {
+			db.close();
+			System.out.println(event.getSource());
+			((Node) event.getSource()).getScene().getWindow().hide();
 			FXMLLoader loader = new FXMLLoader();
 			Parent root = loader.load(getClass().getResource("addView.fxml").openStream());
-			addGame addGameView = (addGame)loader.getController();
-			addGameView.setAttribute(db);
+			addGame addGameView = (addGame) loader.getController();
 			Stage primaryStage = new Stage();
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root);
@@ -102,25 +92,23 @@ public class mainApplication implements Initializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	public void deleteGame(ActionEvent event) {
 		try {
-		String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
-		String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
-		String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
-		
-		System.out.println("GRA DO SKASOWNIA\n Tytu³: "+gameName+"\nStudio: "+gameStudio+"\nPlatforma:"+gamePlatform);
-		
+			String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
+			String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
+			String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
+
 			db.close();
-			System.out.println("Zamknieto baze danych: "+db.conn.isClosed());
-			((Node)event.getSource()).getScene().getWindow().hide();
+			System.out.println("Zamknieto baze danych: " + db.conn.isClosed());
+			((Node) event.getSource()).getScene().getWindow().hide();
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			Pane root11;
 			root11 = loader.load(getClass().getResource("deleteView.fxml").openStream());
-			deleteGame deleteView = (deleteGame)loader.getController();
+			deleteGame deleteView = (deleteGame) loader.getController();
 			deleteView.setAttribute(gameName, gameStudio, gamePlatform);
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root11);
@@ -133,23 +121,21 @@ public class mainApplication implements Initializable {
 			e.printStackTrace();
 		}
 
-		
-		
 	}
-	
+
 	public void editGame(ActionEvent event) {
 		try {
-		String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
-		String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
-		String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
+			String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
+			String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
+			String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
 			db.close();
-			System.out.println("Zamknieto baze danych: "+db.conn.isClosed());
-			((Node)event.getSource()).getScene().getWindow().hide();
+			System.out.println("Zamknieto baze danych: " + db.conn.isClosed());
+			((Node) event.getSource()).getScene().getWindow().hide();
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			Pane root11;
 			root11 = loader.load(getClass().getResource("editView.fxml").openStream());
-			editGame editView = (editGame)loader.getController();
+			editGame editView = (editGame) loader.getController();
 			editView.setAttribute(gameName, gameStudio, gamePlatform);
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root11);
@@ -161,22 +147,21 @@ public class mainApplication implements Initializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void moreAboutGame(ActionEvent event) {
 		try {
-		String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
-		String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
-		String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
-	
-		
+			String gameName = table1.getSelectionModel().getSelectedItem().getTitle();
+			String gamePlatform = table1.getSelectionModel().getSelectedItem().getPlatform();
+			String gameStudio = table1.getSelectionModel().getSelectedItem().getStudio();
+
 			db.close();
-			System.out.println("Zamknieto baze danych: "+db.conn.isClosed());
-			((Node)event.getSource()).getScene().getWindow().hide();
+			System.out.println("Zamknieto baze danych: " + db.conn.isClosed());
+			((Node) event.getSource()).getScene().getWindow().hide();
 			Stage primaryStage = new Stage();
 			FXMLLoader loader = new FXMLLoader();
 			Pane root11;
 			root11 = loader.load(getClass().getResource("selectedGameView.fxml").openStream());
-			selectedGame editView = (selectedGame)loader.getController();
+			selectedGame editView = (selectedGame) loader.getController();
 			editView.setAttribute(gameName, gameStudio, gamePlatform);
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root11);

@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 public class selectedGame implements Initializable {
 	DataBase db;
-	
+
 	@FXML
 	private TextField title;
 	@FXML
@@ -37,27 +37,26 @@ public class selectedGame implements Initializable {
 	private ComboBox<String> platform;
 	@FXML
 	private ComboBox<String> studio;
-	
+
 	String titleString;
 	String studioString;
 	String platformString;
 	ObservableList<String> liststudio;
 	ObservableList<String> observableListplatform;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		if(db==null) {
-		db = new DataBase();
+		if (db == null) {
+			db = new DataBase();
 		}
 		ArrayList<String> studiolist = db.getallStudios();
 		liststudio = FXCollections.observableArrayList(studiolist);
 		studio.setItems(liststudio);
-		
+
 		ArrayList<String> platformlist = db.getallPlatforms();
 		observableListplatform = FXCollections.observableList(platformlist);
 		platform.setItems(observableListplatform);
-		
-		
+
 		title.setEditable(false);
 		note.setEditable(false);
 		date_premiere.setEditable(false);
@@ -66,46 +65,44 @@ public class selectedGame implements Initializable {
 		studio.setEditable(false);
 		note.setWrapText(true);
 	}
-	
-	//Pobieranie i ustawianie danych do edycji
+
+	// Pobieranie i ustawianie danych do edycji
 	public void setAttribute(String title1, String studio1, String platform1) {
 		titleString = title1;
-		studioString=studio1;
-		platformString=platform1;
+		studioString = studio1;
+		platformString = platform1;
 		Game aGame = db.selectAGame(title1, studio1, platform1);
-		//Ustawianie tytu³u do wyœwietlania
+		// Ustawianie tytu³u do wyœwietlania
 		title.setText(titleString);
-		//Ustawianie studia do wyswietlania
-		for(int i=0;i<liststudio.size();i++) {
-			if(liststudio.get(i).equals(studioString)) {
+		// Ustawianie studia do wyswietlania
+		for (int i = 0; i < liststudio.size(); i++) {
+			if (liststudio.get(i).equals(studioString)) {
 				studio.setValue(studioString);
 			}
 		}
-		//Ustawianie platformy
-		for(int i=0;i<observableListplatform.size();i++) {
-			if(observableListplatform.get(i).equals(platformString)) {
+		// Ustawianie platformy
+		for (int i = 0; i < observableListplatform.size(); i++) {
+			if (observableListplatform.get(i).equals(platformString)) {
 				platform.setValue(platformString);
 			}
 		}
-		//Ustawianie notatki
+		// Ustawianie notatki
 		note.setText(aGame.note);
-		//Ustawianie Daty
+		// Ustawianie Daty
 		Date date = aGame.getDate_premiere();
 		date_premiere.setValue(date.toLocalDate());
-		if(aGame.getDate_premiere_pl() != null) {
+		if (aGame.getDate_premiere_pl() != null) {
 			date = aGame.getDate_premiere_pl();
 			date_premiere_pl.setValue(date.toLocalDate());
 		}
 	}
-	
-	
-	
-	//edycja danych
+
+	// edycja danych
 	public void cencel(ActionEvent event) {
-				db.close();
+		db.close();
 		try {
-			((Node)event.getSource()).getScene().getWindow().hide();
-			Stage primaryStage= new Stage();
+			((Node) event.getSource()).getScene().getWindow().hide();
+			Stage primaryStage = new Stage();
 			Parent root1 = FXMLLoader.load(getClass().getResource("mainView.fxml"));
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root1);
@@ -116,9 +113,8 @@ public class selectedGame implements Initializable {
 			// TODO Auto-generated catch block
 			System.out.println("jestem w bledzie");
 			e.printStackTrace();
-		
-	}
+
+		}
 	}
 
-	
 }

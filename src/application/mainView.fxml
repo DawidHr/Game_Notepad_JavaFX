@@ -6,6 +6,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <SplitPane dividerPositions="0.8165829145728644" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="466.0" prefWidth="691.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.mainApplication">
   <items>
@@ -21,12 +22,24 @@
               </columns>
             </TableView>
          </children></AnchorPane>
-      <Pane prefHeight="200.0" prefWidth="200.0">
+      <Pane maxHeight="100.0" maxWidth="691.0" minHeight="100.0" minWidth="691.0" prefHeight="100.0" prefWidth="691.0" style="-fx-background-color: lightgrey;" SplitPane.resizableWithParent="false">
          <children>
-            <Button fx:id="addButton" layoutX="69.0" layoutY="29.0" mnemonicParsing="false" onAction="#addGame" text="DODAJ" />
-            <Button layoutX="196.0" layoutY="29.0" mnemonicParsing="false" onAction="#deleteGame" text="USUŃ" />
-            <Button layoutX="304.0" layoutY="29.0" mnemonicParsing="false" onAction="#editGame" text="EDYTUJ" />
-            <Button layoutX="570.0" layoutY="29.0" mnemonicParsing="false" onAction="#moreAboutGame" text="PRZEGLĄDAJ" />
+            <Button fx:id="addButton" layoutX="18.0" layoutY="25.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#addGame" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: lightblue;" text="DODAJ" textAlignment="CENTER">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></Button>
+            <Button layoutX="186.0" layoutY="25.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#deleteGame" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: lightblue;" text="USUŃ">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></Button>
+            <Button layoutX="354.0" layoutY="25.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#editGame" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: lightblue;" text="EDYTUJ">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></Button>
+            <Button layoutX="522.0" layoutY="25.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#moreAboutGame" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: lightblue;" text="PRZEGLĄDAJ">
+               <font>
+                  <Font name="Cambria" size="20.0" />
+               </font></Button>
          </children>
       </Pane>
   </items>

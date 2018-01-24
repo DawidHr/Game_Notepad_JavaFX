@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 public class editGame implements Initializable {
 	DataBase db;
-	
+
 	@FXML
 	private TextField title;
 	@FXML
@@ -37,134 +37,130 @@ public class editGame implements Initializable {
 	private ComboBox<String> platform;
 	@FXML
 	private ComboBox<String> studio;
-	
+
 	String titleString;
 	String studioString;
 	String platformString;
 	ObservableList<String> liststudio;
 	ObservableList<String> observableListplatform;
-	
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		if(db==null) {
-		db = new DataBase();
+		if (db == null) {
+			db = new DataBase();
 		}
 		ArrayList<String> studiolist = db.getallStudios();
 		liststudio = FXCollections.observableArrayList(studiolist);
 		studio.setItems(liststudio);
-		
+
 		ArrayList<String> platformlist = db.getallPlatforms();
 		observableListplatform = FXCollections.observableList(platformlist);
 		platform.setItems(observableListplatform);
 		note.setWrapText(true);
 	}
-	
-	//Pobieranie i ustawianie danych do edycji
+
+	// Pobieranie i ustawianie danych do edycji
 	public void setAttribute(String title1, String studio1, String platform1) {
 		titleString = title1;
-		studioString=studio1;
-		platformString=platform1;
+		studioString = studio1;
+		platformString = platform1;
 		Game aGame = db.selectAGame(title1, studio1, platform1);
-		//Ustawianie tytu³u do wyœwietlania
+		// Ustawianie tytu³u do wyœwietlania
 		title.setText(titleString);
-		//Ustawianie studia do wyswietlania
-		for(int i=0;i<liststudio.size();i++) {
-			if(liststudio.get(i).equals(studioString)) {
+		// Ustawianie studia do wyswietlania
+		for (int i = 0; i < liststudio.size(); i++) {
+			if (liststudio.get(i).equals(studioString)) {
 				studio.setValue(studioString);
 			}
 		}
-		//Ustawianie platformy
-		for(int i=0;i<observableListplatform.size();i++) {
-			if(observableListplatform.get(i).equals(platformString)) {
+		// Ustawianie platformy
+		for (int i = 0; i < observableListplatform.size(); i++) {
+			if (observableListplatform.get(i).equals(platformString)) {
 				platform.setValue(platformString);
 			}
 		}
-		//Ustawianie notatki
+		// Ustawianie notatki
 		note.setText(aGame.note);
-		//Ustawianie Daty
+		// Ustawianie Daty
 		Date date = aGame.getDate_premiere();
 		date_premiere.setValue(date.toLocalDate());
-		if(aGame.getDate_premiere_pl() != null) {
+		if (aGame.getDate_premiere_pl() != null) {
 			date = aGame.getDate_premiere_pl();
 			date_premiere_pl.setValue(date.toLocalDate());
 		}
 	}
-	
-	
-	
-	//edycja danych
+
+	// edycja danych
 	public void editGame(ActionEvent event) {
 		String titleAfterChange = title.getText();
-		if(titleAfterChange.trim() == null || titleAfterChange.trim().length()==0) {
+		if (titleAfterChange.trim() == null || titleAfterChange.trim().length() == 0) {
 			title.setText("Nale¿y uzupe³nic tytu³");
 			return;
 		}
-		String note1 = note.getText(); 
-	
+		String note1 = note.getText();
+
 		String studioName = studio.getValue();
-		/*if(studioName.trim() == null || studioName.trim().length() == 0) {
-			return;
-		}*/
+		/*
+		 * if(studioName.trim() == null || studioName.trim().length() == 0) { return; }
+		 */
 
 		int studioInt = db.getStudio(studioName);
 		String platformName = platform.getValue();
-		
-		if(platformName == null || platformName.length() == 0) {
+
+		if (platformName == null || platformName.length() == 0) {
 			return;
 		}
 		int platformInt = db.getPlatform(platformName);
-		if(date_premiere.getValue() == null) {
+		if (date_premiere.getValue() == null) {
 			System.out.println("jest null");
 			return;
 		}
-		System.out.println("data: "+date_premiere.getValue());
+		System.out.println("data: " + date_premiere.getValue());
 		LocalDate date = date_premiere.getValue();
 		Date datePremiere = Date.valueOf(date);
 		System.out.println(datePremiere);
 		Date datePremierePL = null;
-		if(date_premiere_pl.getValue() == null) {
-		System.out.println("Data rowna null");
+		if (date_premiere_pl.getValue() == null) {
+			System.out.println("Data rowna null");
+		} else {
+			LocalDate date2 = date_premiere_pl.getValue();
+			datePremierePL = Date.valueOf(date2);
 		}
-		else {
-		LocalDate date2 = date_premiere_pl.getValue();
-		datePremierePL = Date.valueOf(date2);
-		}
-		db.updateGame(titleString, studioString, platformString, titleAfterChange, platformInt, studioInt, datePremiere, datePremierePL, note1);
+		db.updateGame(titleString, studioString, platformString, titleAfterChange, platformInt, studioInt, datePremiere,
+				datePremierePL, note1);
 		db.close();
 		try {
-			((Node)event.getSource()).getScene().getWindow().hide();
-			Stage primaryStage= new Stage();
+			((Node) event.getSource()).getScene().getWindow().hide();
+			Stage primaryStage = new Stage();
 			Parent root1 = FXMLLoader.load(getClass().getResource("mainView.fxml"));
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root1);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();
-			/*((Node)event.getSource()).getScene().getWindow().hide();
-			Stage primaryStage = new Stage();
-			FXMLLoader loader = new FXMLLoader();
-			Parent root1;
-			root1 = loader.load(getClass().getResource("mainView.fxml").openStream());
-			mainApplication mainView = (mainApplication)loader.getController();
-			mainView.setAttribute(db);
-			primaryStage.setResizable(false);
-			Scene scene = new Scene(root1);
-			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-			primaryStage.setScene(scene);
-			primaryStage.show();*/
+			/*
+			 * ((Node)event.getSource()).getScene().getWindow().hide(); Stage primaryStage =
+			 * new Stage(); FXMLLoader loader = new FXMLLoader(); Parent root1; root1 =
+			 * loader.load(getClass().getResource("mainView.fxml").openStream());
+			 * mainApplication mainView = (mainApplication)loader.getController();
+			 * mainView.setAttribute(db); primaryStage.setResizable(false); Scene scene =
+			 * new Scene(root1);
+			 * scene.getStylesheets().add(getClass().getResource("application.css").
+			 * toExternalForm()); primaryStage.setScene(scene); primaryStage.show();
+			 */
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("jestem w bledzie");
 			e.printStackTrace();
-		
-	}
+
+		}
 	}
 
 	public void cencel(ActionEvent event) {
 		db.close();
 		try {
-			((Node)event.getSource()).getScene().getWindow().hide();
-			Stage primaryStage= new Stage();
+			((Node) event.getSource()).getScene().getWindow().hide();
+			Stage primaryStage = new Stage();
 			Parent root1 = FXMLLoader.load(getClass().getResource("mainView.fxml"));
 			primaryStage.setResizable(false);
 			Scene scene = new Scene(root1);
@@ -174,9 +170,9 @@ public class editGame implements Initializable {
 		} catch (IOException e) {
 			System.out.println("jestem w bledzie");
 			e.printStackTrace();
-		
+
+		}
+
 	}
-		
-	}
-	
+
 }
